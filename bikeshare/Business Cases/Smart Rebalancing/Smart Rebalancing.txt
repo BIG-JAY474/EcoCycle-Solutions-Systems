@@ -1,0 +1,24 @@
+Business Case: The "Smart-Rebalancing" Problem
+Client: EcoCycle Solutions, a metropolitan bike-share operator.
+Problem: High operational costs due to "dead zones" (stations with no bikes) and "blocked zones" (full stations with no return docks).
+Goal: Build a predictive engine to forecast hourly bike demand by location and weather to optimize fleet rebalancing trucks and ensure 99% bike availability.
+Step-by-Step ML Workflow (2025 Standard)
+Data Ingestion & Integrity (Silver Tier)
+Load the hour.csv file using the Pandas library.
+2025 Focus: Automate data validation. Check for distribution shifts in normalized weather features (temp, hum, windspeed) against historical averages to ensure sensors aren't malfunctioning.
+Modern Feature Engineering
+Temporal Features: Deconstruct dteday into hour, day of week, and month.
+Cyclical Encoding: Use sine/cosine transforms for the hr (0-23) variable so the model understands that hour 23 is "close" to hour 0.
+Business Logic: Combine holiday and workingday to create a "Peak Commute" flag.
+Preprocessing for Production
+Apply One-Hot Encoding to categorical variables like weathersit and season.
+Use Robust Scaling on weather metrics to handle extreme outliers from unpredictable 2025 climate patterns.
+Model Selection & Training
+Baseline: Use a Random Forest Regressor to establish a "black box" performance floor.
+Advanced: Implement XGBoost or LightGBM with a Poisson loss function (ideal for count data like bike rentals).
+Evaluation & Business Alignment
+Instead of just RMSE (Root Mean Squared Error), calculate MAPE (Mean Absolute Percentage Error) to see the "percentage miss" per hour.
+Business Check: Simulate how many "stock-outs" would have occurred using the model's predictions versus the actual 2011-2012 data.
+Operationalization (MLOps)
+Wrap the model in a FastAPI endpoint.
+Establish a drift monitoring alert: if the atemp (feeling temperature) deviates significantly from the training set, trigger a model retraining.
