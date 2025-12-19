@@ -6,5 +6,5 @@ pydantic
 scikit-learn
 seaborn
 uvicorn
-xgboost
+randomforest
 matplotlib
