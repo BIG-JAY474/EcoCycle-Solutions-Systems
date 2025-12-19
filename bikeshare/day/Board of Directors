@@ -1,0 +1,23 @@
+Business Case: The "Revenue & Maintenance" Strategy
+Client: EcoCycle Solutions Board of Directors.
+Problem: Unpredictable daily operational costs. Large repair bills often hit during peak months because the maintenance team is overwhelmed when bike usage spikes.
+Goal: Build a Daily Demand Forecaster to predict total rentals per day. This allows the business to:
+Schedule Preventive Maintenance: Fix bikes on predicted "Low Demand" days before the "High Demand" days break them.
+Financial Budgeting: Forecast revenue to ensure they have enough cash for parts and new bike orders for the 2025-2026 expansion.
+Step-by-Step ML Workflow (Strategic Tier)
+Macro-Data Ingestion
+Load day.csv.
+Focus: Since this is 2025, we check for Monthly Seasonality. We want to see how "Season 4" (Winter) in 2011 compares to "Season 4" in 2012 to account for business growth.
+Feature Engineering (Macro-Trends)
+Rolling Averages: Create a "7-day rolling average" of temperature. One hot day doesn't change behavior, but a heatwave (3+ hot days) significantly lowers demand.
+Lag Features: Create a 1-day lag (yesterday's count) and a 7-day lag (same day last week).
+Target Analysis (The "Segment" Split)
+Instead of just predicting total_rentals, we will look at Casual vs. Registered users.
+Strategy: If a day is a holiday with good weather, casual users spike (high wear-and-tear). If it’s a workingday, registered users dominate (predictable, stable income).
+Model Selection (Stability over Speed)
+Use a Ridge Regressor or Random Forest.
+Why: For daily data, we only have ~730 rows. High-complexity models like XGBoost might "overfit" (memorize the noise) on such small data. We need a stable model that generalizes well.
+Evaluation (Financial Alignment)
+Calculate Profit/Loss Impact. If the model predicts 4,000 bikes but only 3,500 are used, we calculate the cost of "over-staffing" for that day.
+Operationalization (The Executive Dashboard)
+Unlike the Hourly Dashboard for truck drivers, this dashboard is for the Manager. It shows a 7-day calendar view with "Maintenance Green Zones" (low demand days perfect for repairs).
